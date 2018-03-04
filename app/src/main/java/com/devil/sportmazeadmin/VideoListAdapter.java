@@ -6,13 +6,46 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyViewHolder> {
-    private List<Video> videoList;
+public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyViewHolder> implements Filterable{
+    private List<Video> mFilteredList,mArrayList;
     private Context mcontext;
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    mFilteredList = mArrayList;
+                } else {
+                    ArrayList<Video> filteredList = new ArrayList<>();
+                    for (Video video : mArrayList) {
+                        if (video.getName().toLowerCase().contains(charString)) {
+                            filteredList.add(video);
+                        }
+                    }
+                    mFilteredList = filteredList;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mFilteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mFilteredList = (ArrayList<Video>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView name, value;
@@ -25,7 +58,8 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
 
 
     public VideoListAdapter(Context context, List<Video> videoList) {
-        this.videoList = videoList;
+        this.mFilteredList = videoList;
+        this.mArrayList = videoList;
         mcontext = context;
     }
 
@@ -38,7 +72,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final Video video = videoList.get(position);
+        final Video video = mFilteredList.get(position);
         holder.name.setText(video.getName());
         holder.value.setText(video.getValue());
         holder.name.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +85,6 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return videoList.size();
+        return mFilteredList.size();
     }
 }
