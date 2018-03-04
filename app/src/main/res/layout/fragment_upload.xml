@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Upload"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_margin="8dp">
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIDEO NAME"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Enter video name"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+            <Button
+                android:id="@+id/videoSelector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SELECT VIDEO"
+                android:padding="4dp"
+                android:background="@drawable/button"
+                android:textAlignment="center"
+                android:textColor="#00ff04" />
+            <TextView
+                android:layout_margin="8dp"
+                android:id="@+id/videoPath"
+                android:padding="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:ems="10" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+            <Button
+                android:id="@+id/thumbnailSelector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SELECT THUMBNAIL"
+                android:padding="4dp"
+                android:background="@drawable/button"
+                android:textAlignment="center"
+                android:textColor="#00ff04" />
+            <TextView
+                android:layout_margin="8dp"
+                android:padding="4dp"
+                android:id="@+id/thumnailPath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:ems="10" />
+        </LinearLayout>
+
+        <Button
+            android:layout_marginTop="40dp"
+            android:id="@+id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="UPLOAD"
+            android:textColor="#17c600"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>
