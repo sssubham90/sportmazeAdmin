@@ -1,5 +1,6 @@
 package com.devil.sportmazeadmin;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,8 +67,13 @@ public class VideoViewersActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 myRef.child("Video").child(key).removeValue();
-                mStorageReference.child("Videos").child(key).child("video.mp4").delete();
                 mStorageReference.child("Images").child(key).child("thumbnail.png").delete();
+                mStorageReference.child("Videos").child(key).child("video.mp4").delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        onBackPressed();
+                    }
+                });
             }
         });
 
