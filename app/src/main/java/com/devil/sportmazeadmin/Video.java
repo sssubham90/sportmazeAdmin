@@ -2,11 +2,11 @@ package com.devil.sportmazeadmin;
 
 public class Video {
     private String name;
-    private String value;
+    private String key;
 
     public Video(String name, String value) {
         this.name = name;
-        this.value = value;
+        this.key = value;
     }
 
     public String getName() {
@@ -17,12 +17,12 @@ public class Video {
         this.name = name;
     }
 
-    public String getValue() {
-        return value;
+    public String getKey() {
+        return key;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setKey(String key) {
+        this.key = key;
     }
 
 }

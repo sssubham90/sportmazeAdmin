@@ -1,5 +1,6 @@
 package com.devil.sportmazeadmin;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,11 +19,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -37,12 +35,12 @@ public class Upload extends Fragment {
     DatabaseReference myRef;
     FirebaseUser user;
     TextView videoTV,imageTV;
-    private long value;
     private String videoPath,imagePath,name;
     private StorageReference videoRef,imageRef;
     private UploadTask uploadTask;
     private Uri selectedUri_Video,selectedUri_Image;
     private ProgressDialog progressVideoDialog,progressImageDialog;
+    private String key;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -98,7 +96,7 @@ public class Upload extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == getActivity().RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_VIDEO) {
                 selectedUri_Video = data.getData();
                 if (selectedUri_Video != null){
@@ -118,66 +116,58 @@ public class Upload extends Fragment {
 
     private void addVideo(){
         if (validate()){
-           name = editTextName1.getText().toString().trim();
-           myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            key = myRef.push().getKey();
+            name = editTextName1.getText().toString().trim();
+            videoRef = mStorageRef.child("Videos/"+key+"/video.mp4");
+            uploadTask = videoRef.putFile(selectedUri_Video);
+            progressVideoDialog.show();
+            uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    value = dataSnapshot.getChildrenCount();
-                    videoRef = mStorageRef.child("Videos/"+String.valueOf(value+1)+"/video.mp4");
-                    uploadTask = videoRef.putFile(selectedUri_Video);
-                    progressVideoDialog.show();
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            Toast.makeText(getActivity(), "Video Upload Failed", Toast.LENGTH_LONG).show();
-                            progressVideoDialog.setProgress(0);
-                            progressVideoDialog.dismiss();
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            myRef.child(String.valueOf(value+1)).child("Name").setValue(name);
-                            myRef.child(String.valueOf(value+1)).child("URL").setValue(videoRef.getPath());
-                            progressVideoDialog.dismiss();
-                            Toast.makeText(getActivity(), "Video Uploaded Successfully", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            progressVideoDialog.setProgress((int) progress);
-                        }
-                    });
-                    imageRef = mStorageRef.child("Images/"+String.valueOf(value+1)+"/thumbnail.png");
-                    uploadTask = imageRef.putFile(selectedUri_Image);
-                    progressImageDialog.show();
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            Toast.makeText(getActivity(), "Image Upload Failed", Toast.LENGTH_LONG).show();
-                            progressImageDialog.setProgress(0);
-                            progressImageDialog.dismiss();
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            myRef.child(String.valueOf(value+1)).child("Image URL").setValue(imageRef.getPath());
-                            myRef.child(String.valueOf(value+1)).child("Admin ID").setValue(user.getEmail());
-                            progressImageDialog.dismiss();
-                            Toast.makeText(getActivity(), "Image Uploaded Successfully", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            progressImageDialog.setProgress((int) progress);
-                        }
-                    });
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(getActivity(), "Video Upload Failed", Toast.LENGTH_LONG).show();
+                    progressVideoDialog.setProgress(0);
+                    progressVideoDialog.dismiss();
                 }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
-                public void onCancelled(DatabaseError error) {
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    myRef.child(key).child("Name").setValue(name);
+                    myRef.child(key).child("URL").setValue(videoRef.getPath());
+                    progressVideoDialog.dismiss();
+                    Toast.makeText(getActivity(), "Video Uploaded Successfully", Toast.LENGTH_LONG).show();
                 }
-           });
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    progressVideoDialog.setProgress((int) progress);
+                }
+            });
+            imageRef = mStorageRef.child("Images/"+key+"/thumbnail.png");
+            uploadTask = imageRef.putFile(selectedUri_Image);
+            progressImageDialog.show();
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(getActivity(), "Image Upload Failed", Toast.LENGTH_LONG).show();
+                    progressImageDialog.setProgress(0);
+                    progressImageDialog.dismiss();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    myRef.child(key).child("Image URL").setValue(imageRef.getPath());
+                    myRef.child(key).child("Admin ID").setValue(user.getEmail());
+                    progressImageDialog.dismiss();
+                    Toast.makeText(getActivity(), "Image Uploaded Successfully", Toast.LENGTH_LONG).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    progressImageDialog.setProgress((int) progress);
+                }
+            });
         }
     }
 

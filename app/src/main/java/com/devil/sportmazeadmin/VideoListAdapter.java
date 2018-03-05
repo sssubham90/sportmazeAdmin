@@ -48,10 +48,10 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView name, value;
+        TextView name;
+        String key;
         MyViewHolder(View view) {
             super(view);
-            value = view.findViewById(R.id.value);
             name = view.findViewById(R.id.name);
         }
     }
@@ -74,11 +74,11 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final Video video = mFilteredList.get(position);
         holder.name.setText(video.getName());
-        holder.value.setText(video.getValue());
+        holder.key = video.getKey();
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mcontext.startActivity(new Intent(mcontext,VideoViewersActivity.class).putExtra("value",video.getValue()));
+                mcontext.startActivity(new Intent(mcontext,VideoViewersActivity.class).putExtra("key",video.getKey()));
             }
         });
     }
