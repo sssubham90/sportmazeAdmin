@@ -15,10 +15,10 @@ public class ViewerListAdapter extends RecyclerView.Adapter<ViewerListAdapter.My
     private Context mcontext;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView name, value;
+        TextView name, key;
         MyViewHolder(View view) {
             super(view);
-            value = view.findViewById(R.id.value);
+            key = view.findViewById(R.id.key);
             name = view.findViewById(R.id.name);
         }
     }
@@ -40,7 +40,7 @@ public class ViewerListAdapter extends RecyclerView.Adapter<ViewerListAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final Viewer viewer = viewerList.get(position);
         holder.name.setText(viewer.getName());
-        holder.value.setText(viewer.getValue());
+        holder.key.setText(viewer.getKey());
     }
 
     @Override
