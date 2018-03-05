@@ -28,7 +28,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.MyVi
                 } else {
                     ArrayList<Video> filteredList = new ArrayList<>();
                     for (Video video : mArrayList) {
-                        if (video.getName().toLowerCase().contains(charString)) {
+                        if (video.getName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(video);
                         }
                     }
