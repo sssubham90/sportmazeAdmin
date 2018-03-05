@@ -161,7 +161,6 @@ public class Upload extends Fragment {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             myRef.child(String.valueOf(value+1)).child("Image URL").setValue(imageRef.getPath());
                             myRef.child(String.valueOf(value+1)).child("Admin ID").setValue(user.getEmail());
-                            progressImageDialog.dismiss();
                             Toast.makeText(getActivity(), "Image Uploaded Successfully", Toast.LENGTH_LONG).show();
                         }
                     }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -169,6 +168,8 @@ public class Upload extends Fragment {
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             progressImageDialog.setProgress((int) progress);
+                            if(progressImageDialog.getProgress()==100)
+                                progressImageDialog.dismiss();
                         }
                     });
                 }
