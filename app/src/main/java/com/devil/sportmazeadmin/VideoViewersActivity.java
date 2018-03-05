@@ -34,7 +34,7 @@ public class VideoViewersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_viewers);
         viewerList = new ArrayList<>();
-        key = getIntent().getStringExtra("value");
+        key = getIntent().getStringExtra("key");
         textView = findViewById(R.id.video);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         mAdapter = new ViewerListAdapter(this, viewerList);
