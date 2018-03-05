@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -25,6 +27,7 @@ public class VideoViewersActivity extends AppCompatActivity {
     private String key;
     private TextView textView;
     private DatabaseReference myRef;
+    private StorageReference mStorageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class VideoViewersActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Video");
+        mStorageReference = FirebaseStorage.getInstance().getReference();
         myRef.child(key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -60,6 +64,8 @@ public class VideoViewersActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 myRef.child(key).removeValue();
+                mStorageReference.child("Videos").child(key).child("video.mp4").delete();
+                mStorageReference.child("Images").child(key).child("thumbnail.png").delete();
             }
         });
 

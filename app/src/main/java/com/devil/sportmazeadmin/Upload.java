@@ -124,6 +124,9 @@ public class Upload extends Fragment {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
+                    myRef.child(key).removeValue();
+                    mStorageRef.child("Videos").child(key).child("video.mp4").delete();
+                    mStorageRef.child("Images").child(key).child("thumbnail.png").delete();
                     Toast.makeText(getActivity(), "Video Upload Failed", Toast.LENGTH_LONG).show();
                     progressVideoDialog.setProgress(0);
                     progressVideoDialog.dismiss();
@@ -149,6 +152,9 @@ public class Upload extends Fragment {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
+                    myRef.child(key).removeValue();
+                    mStorageRef.child("Videos").child(key).child("video.mp4").delete();
+                    mStorageRef.child("Images").child(key).child("thumbnail.png").delete();
                     Toast.makeText(getActivity(), "Image Upload Failed", Toast.LENGTH_LONG).show();
                     progressImageDialog.setProgress(0);
                     progressImageDialog.dismiss();
