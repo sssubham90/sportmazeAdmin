@@ -43,9 +43,9 @@ public class VideoViewersActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("Video");
+        myRef = database.getReference();
         mStorageReference = FirebaseStorage.getInstance().getReference();
-        myRef.child(key).addValueEventListener(new ValueEventListener() {
+        myRef.child("Video").child(key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 textView.setText(dataSnapshot.child("Name").getValue().toString());
@@ -63,7 +63,7 @@ public class VideoViewersActivity extends AppCompatActivity {
         findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myRef.child(key).removeValue();
+                myRef.child("Video").child(key).removeValue();
                 mStorageReference.child("Videos").child(key).child("video.mp4").delete();
                 mStorageReference.child("Images").child(key).child("thumbnail.png").delete();
             }
@@ -72,11 +72,10 @@ public class VideoViewersActivity extends AppCompatActivity {
         findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myRef.getParent().child("Featured Videos").addListenerForSingleValueEvent(new ValueEventListener() {
+                myRef.child("Featured Videos").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.getChildrenCount()==10){
-                            myRef.child("10").setValue(dataSnapshot.child("9").getValue());
                             myRef.child("9").setValue(dataSnapshot.child("8").getValue());
                             myRef.child("8").setValue(dataSnapshot.child("7").getValue());
                             myRef.child("7").setValue(dataSnapshot.child("6").getValue());
@@ -85,7 +84,8 @@ public class VideoViewersActivity extends AppCompatActivity {
                             myRef.child("4").setValue(dataSnapshot.child("3").getValue());
                             myRef.child("3").setValue(dataSnapshot.child("2").getValue());
                             myRef.child("2").setValue(dataSnapshot.child("1").getValue());
-                            myRef.child("1").setValue(key);
+                            myRef.child("1").setValue(dataSnapshot.child("0").getValue());
+                            myRef.child("0").setValue(key);
                         }
                         else
                             myRef.child(String.valueOf(dataSnapshot.getChildrenCount())).setValue(key);
