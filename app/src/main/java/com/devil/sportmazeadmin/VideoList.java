@@ -58,8 +58,10 @@ public class VideoList extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-                    videoList.add(new Video(childSnapshot.child("Name").getValue()!=null?childSnapshot.child("Name").getValue().toString():"",childSnapshot.getKey()));
-                    mAdapter.notifyItemInserted(videoList.size());
+                    if(childSnapshot.child("Name").getValue()!=null) {
+                        videoList.add(new Video(childSnapshot.child("Name").getValue().toString(),childSnapshot.getKey()));
+                        mAdapter.notifyItemInserted(videoList.size());
+                    }
                 }
             }
             @Override
