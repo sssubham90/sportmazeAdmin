@@ -8,8 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -93,10 +93,20 @@ public class VideoViewersActivity extends AppCompatActivity {
                             myRef.child("Featured Videos").child("3").setValue(dataSnapshot.child("2").getValue());
                             myRef.child("Featured Videos").child("2").setValue(dataSnapshot.child("1").getValue());
                             myRef.child("Featured Videos").child("1").setValue(dataSnapshot.child("0").getValue());
-                            myRef.child("Featured Videos").child("0").setValue(key);
+                            myRef.child("Featured Videos").child("0").setValue(key).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(VideoViewersActivity.this,"Video Featured", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                         else
-                            myRef.child("Featured Videos").child(String.valueOf(dataSnapshot.getChildrenCount())).setValue(key);
+                            myRef.child("Featured Videos").child(String.valueOf(dataSnapshot.getChildrenCount())).setValue(key).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(VideoViewersActivity.this,"Video Featured", Toast.LENGTH_LONG).show();
+                                }
+                            });
                     }
 
                     @Override
