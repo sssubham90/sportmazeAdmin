@@ -77,7 +77,7 @@ public class VideoViewersActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.feature).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 myRef.child("Featured Videos").addListenerForSingleValueEvent(new ValueEventListener() {
