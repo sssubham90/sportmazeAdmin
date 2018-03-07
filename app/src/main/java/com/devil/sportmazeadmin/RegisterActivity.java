@@ -53,8 +53,13 @@ public class RegisterActivity extends AppCompatActivity {
                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                                     .setDisplayName(name).build();
                                         user.updateProfile(profileUpdates);
-                                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                        startActivity(intent);
+                                        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                dialog.dismiss();
+                                                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                                            }
+                                        });
                                     }
                                     else {
                                         dialog.dismiss();
