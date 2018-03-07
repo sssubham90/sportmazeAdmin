@@ -25,6 +25,7 @@ public class VideoList extends Fragment {
 
     private List<Video> videoList;
     private VideoListAdapter mAdapter;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -32,7 +33,7 @@ public class VideoList extends Fragment {
         super.onCreate(savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_video_list, container, false);
         videoList = new ArrayList<>();
-        RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
+        recyclerView = rootView.findViewById(R.id.recycler_view);
         mAdapter = new VideoListAdapter(getActivity(), videoList);
         SearchView mSearchView = rootView.findViewById(R.id.search_bar);
         mSearchView.setIconified(false);
@@ -61,7 +62,7 @@ public class VideoList extends Fragment {
                 for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
                     if(childSnapshot.child("Name").getValue()!=null) {
                         videoList.add(new Video(childSnapshot.child("Name").getValue().toString(),childSnapshot.getKey()));
-                        mAdapter.notifyItemInserted(videoList.size());
+                        mAdapter.notifyDataSetChanged();
                     }
                 }
             }

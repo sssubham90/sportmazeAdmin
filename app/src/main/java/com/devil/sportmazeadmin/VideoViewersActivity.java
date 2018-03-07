@@ -48,7 +48,7 @@ public class VideoViewersActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         mStorageReference = FirebaseStorage.getInstance().getReference();
-        myRef.child("Video").child(key).addValueEventListener(new ValueEventListener() {
+        myRef.child("Video").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 textView.setText(dataSnapshot.child("Name").getValue().toString());
