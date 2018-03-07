@@ -83,12 +83,7 @@ public class VideoViewersActivity extends AppCompatActivity {
                 myRef.child("Featured Videos").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getChildrenCount()==10){
-                            myRef.child("Featured Videos").child("9").setValue(dataSnapshot.child("8").getValue());
-                            myRef.child("Featured Videos").child("8").setValue(dataSnapshot.child("7").getValue());
-                            myRef.child("Featured Videos").child("7").setValue(dataSnapshot.child("6").getValue());
-                            myRef.child("Featured Videos").child("6").setValue(dataSnapshot.child("5").getValue());
-                            myRef.child("Featured Videos").child("5").setValue(dataSnapshot.child("4").getValue());
+                        if(dataSnapshot.getChildrenCount()==5){
                             myRef.child("Featured Videos").child("4").setValue(dataSnapshot.child("3").getValue());
                             myRef.child("Featured Videos").child("3").setValue(dataSnapshot.child("2").getValue());
                             myRef.child("Featured Videos").child("2").setValue(dataSnapshot.child("1").getValue());
