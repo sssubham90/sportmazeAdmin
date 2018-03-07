@@ -57,6 +57,7 @@ public class VideoList extends Fragment {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                videoList.clear();
                 for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
                     if(childSnapshot.child("Name").getValue()!=null) {
                         videoList.add(new Video(childSnapshot.child("Name").getValue().toString(),childSnapshot.getKey()));
