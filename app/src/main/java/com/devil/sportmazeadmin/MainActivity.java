@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
                     return new VideoList();
                 case 1:
                     return new Upload();
+                case 2:
+                    return new ViewerList();
                 default:
                     return null;
             }
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
@@ -86,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                     return "VIDEO LIST";
                 case 1:
                     return "UPLOAD";
+                case 2:
+                    return "USERS";
             }
             return null;
         }
