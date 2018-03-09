@@ -24,8 +24,8 @@
             android:layout_marginLeft="8dp"
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
-            android:textColor="@android:color/black"
             android:textStyle="bold"
+            android:textColor="@color/colorGreen"
             android:layout_marginStart="8dp" />
         <TextView
             android:id="@+id/data"
